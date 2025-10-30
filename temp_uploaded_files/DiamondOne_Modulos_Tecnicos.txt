@@ -1,0 +1,138 @@
+{
+"product": {
+"name": "DiamondOne",
+"vendor": "Objetiva Solução",
+"version": "2025.3",
+"platform": "SAP Business One (HANA ou MS-SQL)",
+"architecture": {
+"type": "add-on nativo",
+"install\_method": "Addon Manager (.ard)",
+"database\_objects": \["UDO", "UDF", "Stored Procedures"],
+"client\_components": \["Painel Web (React)", "AddOn.exe"]
+},
+"security": {
+"scope": "100% dados dentro do DB SAP B1",
+"auth": "SSO SAP / LDAP opcional",
+"compliance": \["LGPD", "Bloco K", "e-Social"]
+}
+},
+
+"modules": \[ { "code": "DIAMOND\_EXPRESS", "alias": \["Configurador de Produto"], "purpose": "Montagem de produtos customizados e geração de custo/preço em minutos", "key\_features": \[ "Regras de configuração/customização de item", "Geração automática de BOM e OP", "Integração com modulo de CRM" ], "integration\_points": \["OITT", "OITB", "OQUT"] },
+
+```
+{ "code": "ORCAMENTO_VENDA",
+  "name": "Orçamento de Venda / Composição de Preço",
+  "purpose": "Formação de preço com impostos, frete e margem",
+  "key_features": [
+    "Versões múltiplas",
+    "Comparativo Orçado × Realizado",
+    "Flexibilidade de composição de itens para orçamento"
+  ],
+  "integration_points": ["OQUT", "INV1"]
+},
+
+{ "code": "MRP",
+  "name": "MRP / Separação de Materiais",
+  "purpose": "Explosão de necessidades e compras automáticas",
+  "key_features": [
+    "Sugestão de lote econômico",
+    "Reserva automática de estoque",
+    "Alertas de falta"
+  ],
+  "integration_points": ["ORDR", "OPOR", "OITM"]
+},
+
+{ "code": "PCP",
+  "name": "PCP / Planejamento",
+  "purpose": "Programação OS/OP com roteiros de produção",
+  "key_features": [
+    "Planejamento de produção por data de entrega",
+    "Produção puxada ou empurrada",
+    "Ordem de execução de atividades e uso de itens alternativos"
+  ],
+  "integration_points": ["OWOR", "OCLG"]
+},
+
+{ "code": "APS",
+  "name": "APS",
+  "purpose": "Sequenciamento de atividades e recalculo de programação diante de imprevistos",
+  "key_features": [
+    "Algoritmo de recálculo rápido",
+    "Simulação de cenarios",
+    "Ajuste de datas de entrega"
+  ],
+  "integration_points": ["OWOR"]
+},
+
+{ "code": "TURNOS",
+  "name": "Turnos de Trabalho",
+  "purpose": "Calendário de recursos e disponibilidade",
+  "key_features": [
+    "Calendário multi-recurso",
+    "Capacidade em tempo real",
+    "Integração PCP/APS"
+  ],
+  "integration_points": ["OSCL"]
+},
+
+{ "code": "QUALIDADE",
+  "name": "Qualidade",
+  "purpose": "Gestão de inspeções e não-conformidades",
+  "key_features": [
+    "Plano de inspeção por OP",
+    "Registro de defeitos",
+    "Criação de DATA BOOK"
+  ],
+  "integration_points": ["OINM", "OQCN"]
+},
+
+{ "code": "APONTAMENTO",
+  "name": "Apontamento de Fábrica",
+  "purpose": "Captura em tempo real de produção, paradas e refugos",
+  "key_features": [
+    "Interface touch QR-Code",
+    "Associação operador-máquina",
+    "Calculo de desempenho e dados para custo com levantamento de ociosidade"
+  ],
+  "integration_points": ["OWOR", "IGN1"]
+},
+
+{ "code": "BENEFICIAMENTO",
+  "name": "Beneficiamento Externo",
+  "purpose": "Gestão de ordens terceirizadas",
+  "key_features": [
+    "Analise pratica de processos a serem beneficiados",
+    "Automação de processos para beneficamento",
+    "Custo de retorno lançado no item"
+  ],
+  "integration_points": ["POR1", "OPDN"]
+},
+
+{ "code": "CUSTOS",
+  "name": "Custos por Absorção / GGF",
+  "purpose": "Rateio automático de despesas indiretas",
+  "key_features": [
+    "Absorção de custos indiretos de fabricação",
+    "Simulação de custos de produção",
+    "Calculo de Ociosidade de Centro de Custo"
+  ],
+  "integration_points": ["OINM", "OACT"]
+}
+```
+
+],
+
+"common\_dependencies": {
+"sap\_b1\_version": "10.0 FP 2305 ou superior",
+"browser": "Chrome 114+",
+"server\_os": "Windows Server 2019+"
+},
+
+"licensing": { "model": "subscription (user-based)", "modules\_included": \["PCP" , "MRP", "APONTAMENTO", "CUSTOS" ], "optional\_modules": \["DIAMOND\_EXPRESS", "ORCAMENTO\_VENDA", "APS", "QUALIDADE", "BENEFICIAMENTO", "TURNOS" ] },
+
+"support": {
+"sla": "98% first-call resolution",
+"channels": \["Portal", "E-mail", "WhatsApp Business"],
+"onboarding": "Workshop 8 h + e-learning"
+}
+}

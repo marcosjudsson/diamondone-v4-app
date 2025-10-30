@@ -1,0 +1,18 @@
+# Ignorar o ambiente virtual
+venv/
+
+# Ignorar arquivos de cache do Python
+__pycache__/
+*.pyc
+
+# Ignorar arquivos de sistema
+.DS_Store
+
+# Ignorar arquivos de ambiente
+.env
+
+# Ignorar diretórios de cache do pytest
+.pytest_cache/
+
+# Ignorar arquivos de índice FAISS (gerados)
+faiss_index/

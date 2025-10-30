@@ -1,0 +1,22 @@
+Serviço de exemplo: 
+2690 (AXOR)
+2835 (Estrutura metalica)
+
+Configurador:
+http://192.168.12.51:2222/Dashboard/
+
+Apontamento:
+http://192.168.12.50:7172/
+Usuário Geral: 15
+Supervisor: 22
+Etiqueta: 17
+
+DiamondWeb Geral:
+http://192.168.12.50:7172/Arvore/Servico
+
+DiamondWeb GGF:
+http://192.168.12.50:7373/CustoAbsorcao_Lancamento/Index
+
+DiamondWeb com Plano de trabalho:
+http://192.168.12.58:7039/PlanoTrabalho
+
