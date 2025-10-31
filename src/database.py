@@ -259,8 +259,28 @@ def update_persona(nome, prompt, access_level, changed_by, save_history=True):
 def delete_persona(nome):
     engine = get_db_engine()
     with engine.connect() as connection:
-        connection.execute(text("DELETE FROM personas WHERE nome = :nome;"), {"nome": nome})
-        connection.commit()
+        trans = connection.begin()
+        try:
+            # Get the persona_id from the name
+            persona_id = connection.execute(text("SELECT id FROM personas WHERE nome = :nome;"), {"nome": nome}).scalar_one_or_none()
+
+            if persona_id:
+                # 1. Delete links to knowledge sets
+                connection.execute(text("DELETE FROM persona_knowledge_links WHERE persona_id = :pid;"), {"pid": persona_id})
+
+                # 2. Delete from persona_history
+                connection.execute(text("DELETE FROM persona_history WHERE persona_id = :pid;"), {"pid": persona_id})
+                
+                # 3. Set persona_id to NULL in chat_history to keep the logs
+                connection.execute(text("UPDATE chat_history SET persona_id = NULL WHERE persona_id = :pid;"), {"pid": persona_id})
+
+                # 4. Finally, delete the persona
+                connection.execute(text("DELETE FROM personas WHERE id = :pid;"), {"pid": persona_id})
+
+            trans.commit()
+        except Exception as e:
+            trans.rollback()
+            raise e
     st.cache_data.clear()
 
 def fetch_persona_history(persona_id):

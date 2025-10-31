@@ -1,4 +1,4 @@
-# Changelog - DiamondOne
+# Changelog - BinahSys
 
 ## 30 de outubro de 2025
 
@@ -21,5 +21,24 @@
     - Adicionada a **Fase 4: Memória e Evolução do Agente** ao `ROADMAP.md` para refletir essa nova visão de futuro.
     - Criado este `CHANGELOG.md` para registrar o progresso diário do projeto.
 
-### Insights
-- A atualização para a versão 1.0 do LangChain introduziu mudanças significativas e quebras de compatibilidade que não estavam claramente documentadas, exigindo uma investigação aprofundada para resolver os problemas de importação. A modularização da biblioteca em pacotes como `langchain-classic` e `langchain-text-splitters` é a principal causa.
+### Atividades da Tarde (Continuação)
+
+- **Correção de Bug Crítico:**
+    - Corrigido um `sqlalchemy.exc.IntegrityError` que impedia a exclusão de personas. A função `delete_persona` foi refatorada para remover todos os vínculos de uma persona (com bases de conhecimento, histórico, etc.) antes de deletar a persona em si, garantindo a integridade do banco de dados.
+
+- **Implantação e Pós-Deploy:**
+    - Realizado o primeiro deploy da aplicação no Streamlit Community Cloud.
+    - O código foi versionado com Git e enviado para um repositório público no GitHub.
+    - Diagnosticado e resolvido o erro `FATAL: URL do Banco de Dados não encontrada` na aplicação publicada, instruindo sobre a configuração correta dos "Secrets" no painel do Streamlit.
+    - **Alerta Crítico de Segurança:** Identificada a exposição de chaves de API e credenciais de banco de dados. O usuário foi imediatamente alertado sobre o risco e instruído a revogar e substituir todas as chaves expostas.
+    - Resolvido o erro `Base de conhecimento não criada`, explicando a necessidade de recriar os conjuntos de conhecimento e fazer o upload dos documentos na plataforma online, já que o índice FAISS e os arquivos não são enviados pelo Git.
+
+- **Esclarecimentos e Planejamento de Evolução:**
+    - Esclarecido o funcionamento do botão "Reconstruir Base de Conhecimento" e o fluxo correto para adicionar novos documentos na aplicação publicada.
+    - Discutido e validado o funcionamento flexível das personas, que podem operar com base de conhecimento, busca na web ou de forma híbrida.
+    - Registradas novas e importantes funcionalidades no `ROADMAP.md`, detalhando os objetivos e os detalhes de implementação para cada uma:
+        - Adicionada à Fase 3: "Página de Perfil e Alteração de Senha pelo Usuário".
+        - Adicionada à Fase 3: "Página de Chat Simplificada e Compartilhável por Persona".
+        - Adicionada à Fase 4: "Sincronização Automática de Documentos do Google Drive".
+    - Esclarecido o funcionamento do Git, GitHub e o significado do botão "Compare & pull request".
+    - Detalhada a dinâmica de interação entre o usuário e a IA (Gemini), explicando como os comandos são executados no ambiente local e as limitações de acesso ao ambiente de nuvem.

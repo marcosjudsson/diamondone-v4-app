@@ -1,4 +1,4 @@
-# Roadmap de Evolução da Plataforma DiamondOne
+# Roadmap de Evolução da Plataforma BinahSys
 
 Este documento descreve o plano de desenvolvimento e a sequência de implementação de novas funcionalidades para a plataforma.
 
@@ -25,10 +25,17 @@ Este documento descreve o plano de desenvolvimento e a sequência de implementa�
 ### **Fase 3: Implementação da Visão Estratégica (Longo Prazo)**
 *Com a base sólida e robusta, partimos para as funcionalidades que transformarão o modo de trabalho.*
 
-1.  **Resumo de Conversas:** Adicionar uma funcionalidade de IA para gerar resumos de conversas longas no chat.
-2.  **Criação e Exportação de Documentos:** Implementar um fluxo onde o usuário pode pegar uma resposta da IA, ajustá-la em um editor e exportá-la como um documento formal (`.docx`, `.pdf`).
-3.  **Módulo de Treinamento Interativo:** Criar uma nova página dedicada onde uma persona atua como um tutor para processos ou ferramentas internas.
-4.  **Workflows de Agentes (Agent Chaining):** A funcionalidade mais avançada, permitindo a criação de fluxos de trabalho que executam tarefas em sequência, utilizando múltiplas personas para automatizar processos complexos de ponta a ponta.
+1.  **Verificação de Existência de Arquivos no Gerenciador de Conhecimento:** Adicionar uma verificação para garantir que os arquivos registrados no banco de dados realmente existam no disco, exibindo um aviso caso estejam ausentes.
+2.  **Resumo de Conversas:** Adicionar uma funcionalidade de IA para gerar resumos de conversas longas no chat.
+3.  **Criação e Exportação de Documentos:** Implementar um fluxo onde o usuário pode pegar uma resposta da IA, ajustá-la em um editor e exportá-la como um documento formal (`.docx`, `.pdf`).
+4.  **Módulo de Treinamento Interativo:** Criar uma nova página dedicada onde uma persona atua como um tutor para processos ou ferramentas internas.
+5.  **Página de Perfil e Alteração de Senha pelo Usuário:**
+    -   **Objetivo:** Aumentar a segurança e a autonomia do usuário.
+    -   **Detalhes:** Criar uma nova página "Meu Perfil", acessível pelo usuário logado, onde ele possa alterar sua própria senha. A página exigirá que o usuário digite a senha atual e a nova senha duas vezes para confirmação.
+6.  **Página de Chat Simplificada e Compartilhável por Persona:**
+    -   **Objetivo:** Facilitar o acesso de equipes de projeto a personas específicas, sem a complexidade da interface de gerenciamento.
+    -   **Detalhes:** No "Gerenciador de Personas", adicionar um botão "Compartilhar" que gera uma URL única para cada persona. Essa URL levará a uma página de chat limpa, pré-carregada com a persona selecionada, focada apenas na conversação, e com as ferramentas de exportação de documentos.
+7.  **Workflows de Agentes (Agent Chaining):** A funcionalidade mais avançada, permitindo a criação de fluxos de trabalho que executam tarefas em sequência, utilizando múltiplas personas para automatizar processos complexos de ponta a ponta.
 
 ---
 
@@ -36,3 +43,6 @@ Este documento descreve o plano de desenvolvimento e a sequência de implementa�
 *O objetivo é dotar o agente de uma memória persistente e capacidade de aprendizado contínuo a partir das interações.*
 
 1.  **Implementação de Memória de Longo Prazo:** Desenvolver um sistema onde o agente extrai, estrutura e armazena conhecimentos de cada conversa para utilizá-los em interações futuras, permitindo sua evolução e amadurecimento contínuo.
+2.  **Sincronização Automática de Documentos do Google Drive:**
+    -   **Objetivo:** Manter a base de conhecimento das personas constantemente atualizada com o mínimo de intervenção manual.
+    -   **Detalhes:** Implementar uma integração com a API do Google Drive. O administrador poderá vincular um "Conjunto de Conhecimento" a uma pasta específica do Google Drive. Um processo automatizado (rodando em background) irá periodicamente verificar a pasta por arquivos novos ou modificados, baixá-los e adicioná-los automaticamente à base de vetores da persona correspondente.

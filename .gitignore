@@ -16,3 +16,6 @@ __pycache__/
 
 # Ignorar arquivos de índice FAISS (gerados)
 faiss_index/
+
+# Ignorar pasta de configuração do Obsidian
+.obsidian/

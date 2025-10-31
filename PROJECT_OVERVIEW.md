@@ -1,4 +1,4 @@
-# Plataforma DiamondOne: Visão Geral do Projeto
+# Plataforma BinahSys: Visão Geral do Projeto
 
 ## 1. Missão Principal
 
