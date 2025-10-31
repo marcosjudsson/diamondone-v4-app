@@ -46,3 +46,20 @@ Este documento descreve o plano de desenvolvimento e a sequência de implementa�
 2.  **Sincronização Automática de Documentos do Google Drive:**
     -   **Objetivo:** Manter a base de conhecimento das personas constantemente atualizada com o mínimo de intervenção manual.
     -   **Detalhes:** Implementar uma integração com a API do Google Drive. O administrador poderá vincular um "Conjunto de Conhecimento" a uma pasta específica do Google Drive. Um processo automatizado (rodando em background) irá periodicamente verificar a pasta por arquivos novos ou modificados, baixá-los e adicioná-los automaticamente à base de vetores da persona correspondente.
+
+---
+
+### **Fase 5: IA Proativa e Análise de Negócios (Visão de Futuro Avançada)**
+*O objetivo aqui é transformar o BinahSys de um sistema de conhecimento em um parceiro estratégico proativo, capaz de analisar dados quantitativos e gerar insights para otimização de negócios.*
+
+1.  **Integração com Fontes de Dados Quantitativos:**
+    -   **Objetivo:** Permitir que a IA acesse dados de performance, financeiros e operacionais.
+    -   **Detalhes:** Desenvolver conectores para bancos de dados (ERPs, MES), planilhas (Excel, Google Sheets) e APIs de sistemas internos.
+
+2.  **Desenvolvimento de Personas Analíticas:**
+    -   **Objetivo:** Criar agentes capazes de analisar dados, identificar tendências e gerar hipóteses.
+    -   **Detalhes:** Equipar as personas com ferramentas de análise de dados, como a capacidade de executar scripts Python em um ambiente seguro (Code Interpreter) para realizar cálculos estatísticos e gerar visualizações.
+
+3.  **Implementação de Relatórios Autônomos e Alertas Inteligentes:**
+    -   **Objetivo:** Fazer com que a IA trabalhe de forma autônoma para o negócio.
+    -   **Detalhes:** Configurar rotinas onde a IA gera e envia relatórios de performance semanais, e monitora dados em tempo real para enviar alertas inteligentes sobre anomalias ou oportunidades de otimização.

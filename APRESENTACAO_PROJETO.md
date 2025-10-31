@@ -14,8 +14,6 @@ A Plataforma BinahSys é uma iniciativa estratégica para transformar a forma co
 
 Em nosso dia a dia, enfrentamos desafios recorrentes que consomem tempo, geram retrabalho e dificultam o acesso ao conhecimento estratégico.
 
-*(Nota: Esta seção é um rascunho. Por favor, revise e personalize com as dores mais específicas da sua equipe e da empresa.)*
-
 *   **Criação de Documentos Lenta e Inconsistente:** Quanto tempo levamos para criar um BBP, um Termo de Abertura ou um documento de Handover? Cada gerente de projeto usa um modelo diferente, e informações valiosas se perdem entre as versões.
 *   **Conhecimento Descentralizado:** Onde está a documentação do Projeto X? E as atas da reunião Y? Nosso conhecimento vital está espalhado em e-mails, pastas de rede, e na cabeça de poucas pessoas. Quando alguém sai da empresa, parte desse conhecimento vai junto.
 *   **Onboarding Lento e Custoso:** Treinar um novo colaborador nos nossos processos e projetos é um processo longo e que demanda muito tempo de outros membros da equipe.

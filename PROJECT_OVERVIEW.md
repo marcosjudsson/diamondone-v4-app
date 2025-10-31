@@ -2,9 +2,11 @@
 
 ## 1. Missão Principal
 
-Criar uma plataforma de inteligência artificial para colaboradores internos, permitindo a interação com "Personas" (agentes de IA especializados). O objetivo é automatizar processos como a elaboração de documentos (handover, kickoff, BBP), análise de reuniões e outros.
+Criar um **sistema de entendimento** baseado em Inteligência Artificial que sirva como pilar estratégico para a empresa. A missão do BinahSys é ir além de um simples assistente, atuando em três frentes principais:
 
-A plataforma servirá como uma base sólida para analisar, implementar e evoluir o uso de IA na empresa, abrindo horizontes para novas soluções como treinamentos, bases de conhecimento centralizadas e especialistas virtuais.
+1.  **Eficiência Operacional:** Automatizar processos como a elaboração de documentos complexos (BBP, Handover, etc.) e centralizar o conhecimento de projetos, tornando o acesso à informação rápido e preciso.
+2.  **Capacitação e Suporte On-Demand:** Atuar como uma plataforma de treinamento escalável, criando "Tutores Virtuais" para capacitar novos colaboradores, clientes e consultores sobre os processos e sistemas da empresa, 24/7.
+3.  **Inteligência de Negócios Proativa:** Evoluir para um parceiro estratégico que analisa dados quantitativos (de ERPs, bancos de dados, etc.) para identificar tendências, gerar insights e propor otimizações que aumentem a lucratividade e a competitividade da empresa.
 
 ## 2. Módulos da Aplicação
 

@@ -42,3 +42,9 @@
         - Adicionada à Fase 4: "Sincronização Automática de Documentos do Google Drive".
     - Esclarecido o funcionamento do Git, GitHub e o significado do botão "Compare & pull request".
     - Detalhada a dinâmica de interação entre o usuário e a IA (Gemini), explicando como os comandos são executados no ambiente local e as limitações de acesso ao ambiente de nuvem.
+
+- **Feedback da Apresentação e Estratégia de Tangibilização:**
+    - Recebido feedback do diretor técnico sobre a necessidade de demonstrar resultados, ganhos e valor tangíveis do BinahSys.
+    - A falha na demonstração ao vivo (devido à base de conhecimento não configurada) gerou a impressão de foco excessivo na visão e pouca entrega de valor imediato.
+    - Definida a estratégia "Operação Tese": focar na construção de um caso de uso de alto impacto e baixa complexidade para demonstrar o valor do BinahSys de forma inquestionável.
+    - O plano inclui: escolher um caso de uso (ex: Capacitação/Onboarding), construir uma "Persona-Tutor" dedicada e preparar uma demonstração "Uau" com métricas de valor claras.
