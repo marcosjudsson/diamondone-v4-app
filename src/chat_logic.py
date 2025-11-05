@@ -3,6 +3,9 @@
 import os
 import streamlit as st
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+
+from src import api_integrations
+from src import seo_tools
 from langchain_core.output_parsers import StrOutputParser
 from langchain_classic.chains.history_aware_retriever import create_history_aware_retriever
 from langchain_classic.chains.retrieval import create_retrieval_chain
@@ -40,6 +43,7 @@ def get_rag_chain(persona_prompt, allowed_set_ids):
     return create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
 def get_web_search_chain(persona_prompt):
+    llm = get_llm()
     search_tool = TavilySearch()
     prompt = ChatPromptTemplate.from_messages([("system", persona_prompt), ("human", "Pergunta: {input}\n\nResultados da Web:\n<web_search_results>{web_search_results}</web_search_results>")])
 
@@ -72,6 +76,73 @@ def get_hybrid_chain(persona_prompt, allowed_set_ids):
     
     final_chain = RunnablePassthrough.assign(answer=response_chain, context=context_chain.pick("context"))
     return final_chain
+
+from src.config import get_llm, get_embeddings_model, FAISS_INDEX_PATH
+
+def get_seo_analysis_chain(persona_prompt, input_text, keyword, url):
+    llm = get_llm()
+    embeddings_model = get_embeddings_model()
+    search_tool = TavilySearch()
+
+    # Definir o prompt para o agente de SEO, agora incluindo dados de PageSpeed
+    prompt_template = ChatPromptTemplate.from_template("""
+    Você é um especialista em SEO de alto nível e um copywriter excepcional. Sua tarefa é REESCREVER COMPLETAMENTE o rascunho de post fornecido, com dois objetivos principais:
+    1.  **Otimização para SEO:** Com base na palavra-chave foco, URL e análise da concorrência.
+    2.  **Melhora da Legibilidade:** O texto final DEVE ser mais fácil de ler que o original.
+
+    Após reescrever o post, forneça uma ANÁLISE DETALHADA das otimizações realizadas.
+
+    --- INFORMAÇÕES PARA OTIMIZAÇÃO ---
+    Tópico/Palavra-chave Foco: {keyword}
+    URL de Referência (ou do post): {url}
+    Scores de Performance (PageSpeed Insights): {pagespeed_scores}
+    Score de Legibilidade do Rascunho (Flesch Reading Ease): {readability_score}
+    **META DE LEGIBILIDADE:** O score do texto otimizado deve ser **superior a 60** e, idealmente, maior que o score do rascunho original.
+
+    Resultados da Web da Concorrência:
+    <web_search_results>{web_search_results}</web_search_results>
+
+    Rascunho Original:
+    {input_text}
+
+    --- INSTRUÇÕES DE SAÍDA ---
+    1.  **TEXTO OTIMIZADO DO POST:** Comece diretamente com o artigo completo e reescrito.
+        *   **Estrutura:** Título (H1), meta descrição, introdução, subtítulos (H2, H3), corpo do texto, um Call-to-Action (CTA) forte e, no final, uma seção de **"Perguntas Frequentes (FAQ)"** com 3 a 5 perguntas e respostas relevantes.
+        *   **Legibilidade:** Use frases curtas, parágrafos concisos, listas e negritos para facilitar a leitura. A linguagem deve ser clara e direta.
+        *   **SEO:** Incorpore a palavra-chave foco e termos semânticos relevantes de forma natural.
+    2.  **ANÁLISE DETALHADA:** Após o texto otimizado, insira a linha `--- ANÁLISE DETALHADA ---`.
+        *   Nesta seção, explique as otimizações feitas.
+        *   **Schema Markup:** Inclua uma subseção chamada "Schema Markup (JSON-LD)" contendo o código completo do schema para o FAQ gerado.
+        *   **Instruções para WordPress:** Abaixo do código do schema, adicione uma nota explicando como implementá-lo: "Para usar no WordPress, copie o código JSON-LD acima e cole-o na seção 'Schema' do seu plugin de SEO (Yoast, Rank Math) ou em um bloco 'HTML Personalizado'."
+        *   **Sugestões de Elementos Visuais:** Inclua uma subseção com ideias para enriquecer visualmente o post, como infográficos, screenshots de dashboards, tabelas comparativas, e a importância de alt text descritivo para cada um.
+        *   **Análise da SERP e Concorrência:** Com base nos `web_search_results`, analise os top 3-5 concorrentes. Identifique padrões de conteúdo, intenção de busca que eles respondem e "gaps de conteúdo" que o post otimizado pode explorar.
+        *   **KPIs para Monitoramento:** Sugira 2-3 métricas chave para acompanhar o sucesso do post (ex: Ranking da Palavra-chave Foco, CTR Orgânico, Tempo na Página).
+        *   **Recomendações para E-A-T (Expertise, Authoritativeness, Trustworthiness):** Forneça sugestões específicas para fortalecer a autoridade do post (ex: biografia do autor, citações de fontes, links para estudos).
+        *   Ofereça sugestões adicionais (outros schemas como 'Article', etc.), priorizando "Quick Wins" sempre que possível.
+    """)
+
+    # Criar a cadeia que primeiro busca na web, analisa a legibilidade, verifica o PageSpeed e depois chama o LLM
+    chain = (
+        {
+            "web_search_results": lambda x: search_tool.invoke({"query": x["keyword"]}),
+            "readability_score": lambda x: seo_tools.analyze_readability(x["input_text"]),
+            "pagespeed_scores": lambda x: api_integrations.get_psi_data(x["url"]),
+            "persona_prompt": lambda x: x["persona_prompt"],
+            "input_text": lambda x: x["input_text"],
+            "keyword": lambda x: x["keyword"],
+            "url": lambda x: x["url"],
+        }
+        | prompt_template
+        | llm
+        | StrOutputParser()
+    )
+
+    # Invocar a cadeia para obter a análise inicial do LLM
+    initial_analysis = chain.invoke({"persona_prompt": persona_prompt, "input_text": input_text, "keyword": keyword, "url": url})
+
+    # Por enquanto, retornamos apenas a análise inicial do LLM.
+    return {"answer": initial_analysis, "context": []}
+
 
 # --- LÓGICA DO ASSISTENTE DE CRIAÇÃO DE PERSONA ---
 

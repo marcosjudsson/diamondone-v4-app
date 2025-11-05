@@ -3,6 +3,9 @@
 import streamlit as st
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_huggingface import HuggingFaceEmbeddings
+from dotenv import load_dotenv
+
+load_dotenv() # Carrega as variáveis de ambiente do .env
 
 # --- CONSTANTES COMPARTILHADAS ---
 FAISS_INDEX_PATH = "faiss_index"

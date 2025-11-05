@@ -1,27 +1,6 @@
-# requirements.txt
-
-streamlit
-python-dotenv
-sqlalchemy
-psycopg2-binary
-bcrypt
-sentence-transformers
-
-# Bibliotecas de IA e LangChain
-langchain-core
-langchain-google-genai
-langchain
-langchain-community
-langchain-huggingface
-langchain-text-splitters
-langchain-classic
-faiss-cpu # ou faiss-gpu se você tiver uma GPU compatível
+# Novas bibliotecas para o Agente de SEO
+google-api-python-client
+nltk
+textstat
 pypdf
-docx2txt
-langchainhub # Necessário para alguns prompts padrão
-langchain-tavily # Para a persona híbrida que faz busca na web
-pandas
-beautifulsoup4 # Para parsing de HTML de URLs
-
-# Para testes
-pytest
+pyperclip
