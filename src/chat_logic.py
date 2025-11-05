@@ -86,15 +86,19 @@ def get_seo_analysis_chain(persona_prompt, input_text, keyword, url):
 
     # Definir o prompt para o agente de SEO, agora incluindo dados de PageSpeed
     prompt_template = ChatPromptTemplate.from_template("""
-    Você é um especialista em SEO de alto nível, focado em otimização de conteúdo e performance. Sua tarefa é REESCREVER COMPLETAMENTE o rascunho de post fornecido, otimizando-o para SEO, legibilidade e engajamento, com base na palavra-chave foco, URL de referência e dados de performance.
+    Você é um especialista em SEO de alto nível e um copywriter excepcional. Sua tarefa é REESCREVER COMPLETAMENTE o rascunho de post fornecido, com dois objetivos principais:
+    1.  **Otimização para SEO:** Com base na palavra-chave foco, URL e análise da concorrência.
+    2.  **Melhora da Legibilidade:** O texto final DEVE ser mais fácil de ler que o original.
 
-    Após reescrever o post, forneça uma ANÁLISE DETALHADA das otimizações realizadas, justificando suas escolhas e apresentando as métricas.
+    Após reescrever o post, forneça uma ANÁLISE DETALHADA das otimizações realizadas.
 
     --- INFORMAÇÕES PARA OTIMIZAÇÃO ---
-    Tópico: {keyword}
+    Tópico/Palavra-chave Foco: {keyword}
     URL de Referência (ou do post): {url}
     Scores de Performance (PageSpeed Insights): {pagespeed_scores}
-    Score de Legibilidade (Flesch Reading Ease): {readability_score} (Scores mais altos são mais fáceis de ler. Idealmente, acima de 60 para um público geral).
+    Score de Legibilidade do Rascunho (Flesch Reading Ease): {readability_score}
+    **META DE LEGIBILIDADE:** O score do texto otimizado deve ser **superior a 60** e, idealmente, maior que o score do rascunho original.
+
     Resultados da Web da Concorrência:
     <web_search_results>{web_search_results}</web_search_results>
 
@@ -102,11 +106,19 @@ def get_seo_analysis_chain(persona_prompt, input_text, keyword, url):
     {input_text}
 
     --- INSTRUÇÕES DE SAÍDA ---
-    1.  Comece com o TEXTO OTIMIZADO DO POST. Este deve ser um artigo completo, pronto para publicação (após revisão humana), com título (H1), meta descrição, introdução, subtítulos (H2, H3), corpo do texto e um Call-to-Action (CTA) forte e específico.
-    2.  O texto otimizado deve ter legibilidade aprimorada (frases curtas, parágrafos concisos, listas, negritos).
-    3.  Incorpore a palavra-chave foco e termos semânticos relevantes.
-    4.  Após o TEXTO OTIMIZADO, insira a linha: `--- ANÁLISE DETALHADA ---`
-    5.  Em seguida, forneça a ANÁLISE DETALHADA, explicando as otimizações feitas, justificando as escolhas com base nos dados fornecidos (PageSpeed, Legibilidade, Concorrência) e oferecendo sugestões adicionais (KPIs, Schema Markup, etc.).
+    1.  **TEXTO OTIMIZADO DO POST:** Comece diretamente com o artigo completo e reescrito.
+        *   **Estrutura:** Título (H1), meta descrição, introdução, subtítulos (H2, H3), corpo do texto, um Call-to-Action (CTA) forte e, no final, uma seção de **"Perguntas Frequentes (FAQ)"** com 3 a 5 perguntas e respostas relevantes.
+        *   **Legibilidade:** Use frases curtas, parágrafos concisos, listas e negritos para facilitar a leitura. A linguagem deve ser clara e direta.
+        *   **SEO:** Incorpore a palavra-chave foco e termos semânticos relevantes de forma natural.
+    2.  **ANÁLISE DETALHADA:** Após o texto otimizado, insira a linha `--- ANÁLISE DETALHADA ---`.
+        *   Nesta seção, explique as otimizações feitas.
+        *   **Schema Markup:** Inclua uma subseção chamada "Schema Markup (JSON-LD)" contendo o código completo do schema para o FAQ gerado.
+        *   **Instruções para WordPress:** Abaixo do código do schema, adicione uma nota explicando como implementá-lo: "Para usar no WordPress, copie o código JSON-LD acima e cole-o na seção 'Schema' do seu plugin de SEO (Yoast, Rank Math) ou em um bloco 'HTML Personalizado'."
+        *   **Sugestões de Elementos Visuais:** Inclua uma subseção com ideias para enriquecer visualmente o post, como infográficos, screenshots de dashboards, tabelas comparativas, e a importância de alt text descritivo para cada um.
+        *   **Análise da SERP e Concorrência:** Com base nos `web_search_results`, analise os top 3-5 concorrentes. Identifique padrões de conteúdo, intenção de busca que eles respondem e "gaps de conteúdo" que o post otimizado pode explorar.
+        *   **KPIs para Monitoramento:** Sugira 2-3 métricas chave para acompanhar o sucesso do post (ex: Ranking da Palavra-chave Foco, CTR Orgânico, Tempo na Página).
+        *   **Recomendações para E-A-T (Expertise, Authoritativeness, Trustworthiness):** Forneça sugestões específicas para fortalecer a autoridade do post (ex: biografia do autor, citações de fontes, links para estudos).
+        *   Ofereça sugestões adicionais (outros schemas como 'Article', etc.), priorizando "Quick Wins" sempre que possível.
     """)
 
     # Criar a cadeia que primeiro busca na web, analisa a legibilidade, verifica o PageSpeed e depois chama o LLM
