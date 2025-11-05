@@ -3,6 +3,9 @@
 import os
 import streamlit as st
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+
+from src import api_integrations
+from src import seo_tools
 from langchain_core.output_parsers import StrOutputParser
 from langchain_classic.chains.history_aware_retriever import create_history_aware_retriever
 from langchain_classic.chains.retrieval import create_retrieval_chain
@@ -40,6 +43,7 @@ def get_rag_chain(persona_prompt, allowed_set_ids):
     return create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
 def get_web_search_chain(persona_prompt):
+    llm = get_llm()
     search_tool = TavilySearch()
     prompt = ChatPromptTemplate.from_messages([("system", persona_prompt), ("human", "Pergunta: {input}\n\nResultados da Web:\n<web_search_results>{web_search_results}</web_search_results>")])
 
@@ -72,6 +76,61 @@ def get_hybrid_chain(persona_prompt, allowed_set_ids):
     
     final_chain = RunnablePassthrough.assign(answer=response_chain, context=context_chain.pick("context"))
     return final_chain
+
+from src.config import get_llm, get_embeddings_model, FAISS_INDEX_PATH
+
+def get_seo_analysis_chain(persona_prompt, input_text, keyword, url):
+    llm = get_llm()
+    embeddings_model = get_embeddings_model()
+    search_tool = TavilySearch()
+
+    # Definir o prompt para o agente de SEO, agora incluindo dados de PageSpeed
+    prompt_template = ChatPromptTemplate.from_template("""
+    Você é um especialista em SEO de alto nível, focado em otimização de conteúdo e performance. Sua tarefa é REESCREVER COMPLETAMENTE o rascunho de post fornecido, otimizando-o para SEO, legibilidade e engajamento, com base na palavra-chave foco, URL de referência e dados de performance.
+
+    Após reescrever o post, forneça uma ANÁLISE DETALHADA das otimizações realizadas, justificando suas escolhas e apresentando as métricas.
+
+    --- INFORMAÇÕES PARA OTIMIZAÇÃO ---
+    Tópico: {keyword}
+    URL de Referência (ou do post): {url}
+    Scores de Performance (PageSpeed Insights): {pagespeed_scores}
+    Score de Legibilidade (Flesch Reading Ease): {readability_score} (Scores mais altos são mais fáceis de ler. Idealmente, acima de 60 para um público geral).
+    Resultados da Web da Concorrência:
+    <web_search_results>{web_search_results}</web_search_results>
+
+    Rascunho Original:
+    {input_text}
+
+    --- INSTRUÇÕES DE SAÍDA ---
+    1.  Comece com o TEXTO OTIMIZADO DO POST. Este deve ser um artigo completo, pronto para publicação (após revisão humana), com título (H1), meta descrição, introdução, subtítulos (H2, H3), corpo do texto e um Call-to-Action (CTA) forte e específico.
+    2.  O texto otimizado deve ter legibilidade aprimorada (frases curtas, parágrafos concisos, listas, negritos).
+    3.  Incorpore a palavra-chave foco e termos semânticos relevantes.
+    4.  Após o TEXTO OTIMIZADO, insira a linha: `--- ANÁLISE DETALHADA ---`
+    5.  Em seguida, forneça a ANÁLISE DETALHADA, explicando as otimizações feitas, justificando as escolhas com base nos dados fornecidos (PageSpeed, Legibilidade, Concorrência) e oferecendo sugestões adicionais (KPIs, Schema Markup, etc.).
+    """)
+
+    # Criar a cadeia que primeiro busca na web, analisa a legibilidade, verifica o PageSpeed e depois chama o LLM
+    chain = (
+        {
+            "web_search_results": lambda x: search_tool.invoke({"query": x["keyword"]}),
+            "readability_score": lambda x: seo_tools.analyze_readability(x["input_text"]),
+            "pagespeed_scores": lambda x: api_integrations.get_psi_data(x["url"]),
+            "persona_prompt": lambda x: x["persona_prompt"],
+            "input_text": lambda x: x["input_text"],
+            "keyword": lambda x: x["keyword"],
+            "url": lambda x: x["url"],
+        }
+        | prompt_template
+        | llm
+        | StrOutputParser()
+    )
+
+    # Invocar a cadeia para obter a análise inicial do LLM
+    initial_analysis = chain.invoke({"persona_prompt": persona_prompt, "input_text": input_text, "keyword": keyword, "url": url})
+
+    # Por enquanto, retornamos apenas a análise inicial do LLM.
+    return {"answer": initial_analysis, "context": []}
+
 
 # --- LÓGICA DO ASSISTENTE DE CRIAÇÃO DE PERSONA ---
 
