@@ -4,3 +4,4 @@ nltk
 textstat
 pypdf
 pyperclip
+python-dotenv
